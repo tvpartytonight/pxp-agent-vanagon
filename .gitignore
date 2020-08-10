@@ -1,0 +1,13 @@
+vendor/*
+output/*
+.bundle
+gems
+Gemfile.local
+Gemfile.lock
+*.log
+ext/packaging
+ext/build_metadata.json
+ext/build_metadata*
+pkg
+*.swp
+.DS_Store
