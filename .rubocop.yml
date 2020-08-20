@@ -1,0 +1,26 @@
+---
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - '.git/**/*'
+    - 'bin/*'
+    - 'output/**/*'
+  TargetRubyVersion: 2.4
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - 'configs/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
