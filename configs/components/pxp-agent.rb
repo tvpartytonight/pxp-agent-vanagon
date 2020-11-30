@@ -123,7 +123,7 @@ component 'pxp-agent' do |pkg, settings, platform|
     # pkg.install_configfile 'ext/pxp-agent.logrotate', '/etc/logrotate.d/pxp-agent'
   when 'launchd'
     pkg.install_file('ext/osx/pxp-agent.plist', "#{service_conf}/osx/pxp-agent.plist")
-    pkg.install_file('ext/osx/pxp-agent.newsyslog.conf', "#{service_conf}/pxp-agent.newsyslog.conf")
+    pkg.install_file('ext/osx/pxp-agent.newsyslog.conf', "#{service_conf}/osx/pxp-agent.newsyslog.conf")
     # pkg.install_service 'ext/osx/pxp-agent.plist', nil, 'com.puppetlabs.pxp-agent'
   when 'smf'
     pkg.install_file('ext/solaris/smf/pxp-agent.xml', "#{service_conf}/solaris/smf/pxp-agent.xml")
