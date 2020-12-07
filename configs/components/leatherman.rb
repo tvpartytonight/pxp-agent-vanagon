@@ -19,11 +19,12 @@ component 'leatherman' do |pkg, settings, platform|
   elsif platform.name =~ /debian-9|el-[67]|redhatfips-7|sles-12|ubuntu-(:?16.04|18.04)/
     pkg.build_requires 'pl-cmake'
     pkg.build_requires 'pl-gettext'
+    pkg.build_requires 'runtime'
   end
 
   pkg.build_requires 'puppet-runtime' # Provides curl and ruby
-  pkg.build_requires 'runtime' if platform.name =~ /debian-9|el-[67]|redhatfips-7|sles-12|ubuntu-(:?16.04|18.04)/ ||
-                                  !platform.is_linux?
+
+  pkg.build_requires 'runtime' unless platform.is_linux?
 
   ruby = "#{settings[:host_ruby]} -rrbconfig"
 
