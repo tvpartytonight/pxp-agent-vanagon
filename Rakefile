@@ -15,13 +15,8 @@ end
 
 desc 'verify that commit messages match CONTRIBUTING.md requirements'
 task(:commits) do
-  commits = ENV['TRAVIS_COMMIT_RANGE']
-  if commits.nil?
-    puts "TRAVIS_COMMIT_RANGE is undefined, I don't know what to check."
-    exit
-  end
-
-  `git log --no-merges --pretty=%s #{commits}`.each_line do |commit_summary|
+  commit_range = 'HEAD^..HEAD'
+  `git log --no-merges --pretty=%s #{commit_range}`.each_line do |commit_summary|
     error_message = <<~HEREDOC
       \n\n\n\tThis commit summary didn't match CONTRIBUTING.md guidelines:\n \
       \n\t\t#{commit_summary}\n \
