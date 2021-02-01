@@ -96,44 +96,33 @@ component 'pxp-agent' do |pkg, settings, platform|
   end
 
   service_conf = settings[:service_conf]
-  case platform.servicetype
-
-  when 'systemd'
-    pkg.install_file('ext/systemd/pxp-agent.service', "#{service_conf}/systemd/pxp-agent.service")
-    pkg.install_file('ext/redhat/pxp-agent.sysconfig', "#{service_conf}/redhat/pxp-agent.sysconfig")
-    pkg.install_file('ext/systemd/pxp-agent.logrotate', "#{service_conf}/systemd/pxp-agent.logrotate")
-
-    # pkg.install_service 'ext/systemd/pxp-agent.service', 'ext/redhat/pxp-agent.sysconfig'
-    # pkg.install_configfile 'ext/systemd/pxp-agent.logrotate', '/etc/logrotate.d/pxp-agent'
-  when 'sysv'
-    if platform.is_deb?
-      pkg.install_file('ext/debian/pxp-agent.ini', "#{service_conf}/debian/pxp-agent.ini")
-      pkg.install_file('ext/debian/pxp-agent.default', "#{service_conf}/debian/pxp-agent.default")
-      # pkg.install_service 'ext/debian/pxp-agent.init', 'ext/debian/pxp-agent.default'
-    elsif platform.is_sles?
-      pkg.install_file('ext/suse/pxp-agent.init', "#{service_conf}/suse/pxp-agent.init")
+  platform.get_service_types.each do |servicetype|
+    case servicetype
+    when 'systemd'
+      pkg.install_file('ext/systemd/pxp-agent.service', "#{service_conf}/systemd/pxp-agent.service")
       pkg.install_file('ext/redhat/pxp-agent.sysconfig', "#{service_conf}/redhat/pxp-agent.sysconfig")
-      # pkg.install_service 'ext/suse/pxp-agent.init', 'ext/redhat/pxp-agent.sysconfig'
-    elsif platform.is_rpm?
-      pkg.install_file('ext/redhat/pxp-agent.init', "#{service_conf}/redhat/pxp-agent.init")
-      pkg.install_file('ext/redhat/pxp-agent.sysconfig', "#{service_conf}/redhat/pxp-agent.sysconfig")
-      # pkg.install_service 'ext/redhat/pxp-agent.init', 'ext/redhat/pxp-agent.sysconfig'
+      pkg.install_file('ext/systemd/pxp-agent.logrotate', "#{service_conf}/systemd/pxp-agent.logrotate")
+    when 'sysv'
+      if platform.is_deb?
+        pkg.install_file('ext/debian/pxp-agent.ini', "#{service_conf}/debian/pxp-agent.ini")
+        pkg.install_file('ext/debian/pxp-agent.default', "#{service_conf}/debian/pxp-agent.default")
+      elsif platform.is_sles?
+        pkg.install_file('ext/suse/pxp-agent.init', "#{service_conf}/suse/pxp-agent.init")
+        pkg.install_file('ext/redhat/pxp-agent.sysconfig', "#{service_conf}/redhat/pxp-agent.sysconfig")
+      elsif platform.is_rpm?
+        pkg.install_file('ext/redhat/pxp-agent.init', "#{service_conf}/redhat/pxp-agent.init")
+        pkg.install_file('ext/redhat/pxp-agent.sysconfig', "#{service_conf}/redhat/pxp-agent.sysconfig")
+      end
+      pkg.install_file('ext/pxp-agent.logrotate', "#{service_conf}/pxp-agent.logrotate")
+    when 'launchd'
+      pkg.install_file('ext/osx/pxp-agent.plist', "#{service_conf}/osx/pxp-agent.plist")
+      pkg.install_file('ext/osx/pxp-agent.newsyslog.conf', "#{service_conf}/osx/pxp-agent.newsyslog.conf")
+    when 'smf'
+      pkg.install_file('ext/solaris/smf/pxp-agent.xml', "#{service_conf}/solaris/smf/pxp-agent.xml")
+    when /windows|aix/
+      # nothing to do
+    else
+      raise "need to know where to put #{pkg.get_name} service files"
     end
-    pkg.install_file('ext/pxp-agent.logrotate', "#{service_conf}/pxp-agent.logrotate")
-    # pkg.install_configfile 'ext/pxp-agent.logrotate', '/etc/logrotate.d/pxp-agent'
-  when 'launchd'
-    pkg.install_file('ext/osx/pxp-agent.plist', "#{service_conf}/osx/pxp-agent.plist")
-    pkg.install_file('ext/osx/pxp-agent.newsyslog.conf', "#{service_conf}/osx/pxp-agent.newsyslog.conf")
-    # pkg.install_service 'ext/osx/pxp-agent.plist', nil, 'com.puppetlabs.pxp-agent'
-  when 'smf'
-    pkg.install_file('ext/solaris/smf/pxp-agent.xml', "#{service_conf}/solaris/smf/pxp-agent.xml")
-    # pkg.install_service 'ext/solaris/smf/pxp-agent.xml', service_type: 'network'
-    # when 'aix'
-    # pkg.install_file('resources/aix/pxp-agent.service', "#{service_conf}/aix/pxp-agent.service")
-    # pkg.install_service 'resources/pxp-agent.service', nil, 'pxp-agent'
-  when /windows|aix/
-    # nothing to do
-  else
-    raise "need to know where to put #{pkg.get_name} service files"
   end
 end
