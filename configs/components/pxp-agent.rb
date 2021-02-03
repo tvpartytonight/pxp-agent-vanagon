@@ -104,7 +104,7 @@ component 'pxp-agent' do |pkg, settings, platform|
       pkg.install_file('ext/systemd/pxp-agent.logrotate', "#{service_conf}/systemd/pxp-agent.logrotate")
     when 'sysv'
       if platform.is_deb?
-        pkg.install_file('ext/debian/pxp-agent.ini', "#{service_conf}/debian/pxp-agent.ini")
+        pkg.install_file('ext/debian/pxp-agent.init', "#{service_conf}/debian/pxp-agent.init")
         pkg.install_file('ext/debian/pxp-agent.default', "#{service_conf}/debian/pxp-agent.default")
       elsif platform.is_sles?
         pkg.install_file('ext/suse/pxp-agent.init', "#{service_conf}/suse/pxp-agent.init")
