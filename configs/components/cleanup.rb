@@ -34,7 +34,7 @@ component 'cleanup' do |pkg, settings, _platform|
       cleanup_steps << "#{rm} -rf #{settings[:libdir]}/#{component}*"
     end
   else
-    bins = "-name '*pxp-agent*' -o -name '*execution_wrapper*'"
+    bins = "-name '*pxp-agent*' -o -name '*execution_wrapper* -o -name '*apply_ruby_shim.rb*'"
     cleanup_steps << "#{platform.find} #{settings[:bindir]} -type f ! \\( #{bins} \\) -exec #{rm} -rf {} +"
     cleanup_steps << "#{platform.find}  #{settings[:libdir]} -type d ! -name 'lib' -exec #{rm} -rf {} +"
     libs = "-name '*leatherman*' -o -name '*libpxp*' -o -name '*libcpp*'"
