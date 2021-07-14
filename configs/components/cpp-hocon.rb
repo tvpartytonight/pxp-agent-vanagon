@@ -13,6 +13,7 @@ component 'cpp-hocon' do |pkg, settings, platform|
     cmake = '/usr/local/bin/cmake'
     boost_static_flag = '-DBOOST_STATIC=OFF'
     special_flags = "-DCMAKE_CXX_FLAGS='#{settings[:cflags]}' -DENABLE_CXX_WERROR=OFF"
+    pkg.environment 'CXX', 'clang++ -target arm64-apple-macos11' if platform.is_cross_compiled?
   elsif platform.is_cross_compiled_linux?
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     cmake = '/opt/pl-build-tools/bin/cmake'
@@ -69,7 +70,11 @@ component 'cpp-hocon' do |pkg, settings, platform|
   # Make test will explode horribly in a cross-compile situation
   # Tests will be skipped on AIX until they are expected to pass
   test = if platform.is_cross_compiled? || platform.is_aix?
-           '/bin/true'
+           if platform.is_macos?
+             '/usr/bin/true'
+           else
+             '/bin/true'
+           end
          else
            "#{make} test ARGS=-V"
          end
