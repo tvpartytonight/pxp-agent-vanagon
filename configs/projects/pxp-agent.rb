@@ -29,7 +29,7 @@ project 'pxp-agent' do |proj|
   proj.setting(:service_conf, File.join(proj.install_root, 'service_conf'))
 
   proj.component 'puppet-runtime'
-  proj.component 'runtime' if platform.name =~ /debian-9|el-[67]|redhatfips-7|sles-12|ubuntu-(:?16.04|18.04)/ || !platform.is_linux?
+  proj.component 'runtime' if platform.name =~ /debian-9|el-[67]|redhatfips-7|sles-12|ubuntu-(:?16.04|18.04-amd64)/ || !platform.is_linux?
 
   proj.component 'leatherman'
   proj.component 'cpp-hocon'
