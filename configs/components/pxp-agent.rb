@@ -47,7 +47,7 @@ component 'pxp-agent' do |pkg, settings, platform|
     # PCP-87: If we build with -O3, solaris segfaults due to something in std::vector
     special_flags += " -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' "
 
-    special_flags += " -DCMAKE_EXE_LINKER_FLAGS=' /opt/puppetlabs/puppet/lib/libssl.so /opt/puppetlabs/puppet/lib/libcrypto.so' " if platform.architecture == 'sparc'
+    special_flags += " -DCMAKE_EXE_LINKER_FLAGS=' /opt/puppetlabs/puppet/lib/libssl.so /opt/puppetlabs/puppet/lib/libgcc_s.so /opt/puppetlabs/puppet/lib/libcrypto.so' " if platform.architecture == 'sparc'
   elsif platform.is_windows?
     make = "#{settings[:gcc_bindir]}/mingw32-make"
     pkg.environment 'CYGWIN', settings[:cygwin]
